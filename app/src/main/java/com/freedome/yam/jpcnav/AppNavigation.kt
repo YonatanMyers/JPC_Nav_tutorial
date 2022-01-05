@@ -26,80 +26,26 @@ fun AppNavigation() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "Inputs") {
         composable("Inputs") { Inputs(navController) }
-        composable(
-            "Output/{arg1}/{arg2}",
-            arguments = listOf(
-                navArgument("arg1") {
-                    type = NavType.IntType
-                    nullable = false
-                },
-
-                navArgument("arg2") {
-                    type = NavType.IntType
-                    nullable = false
-                }
-            )
-        ) { args ->
-            val a1 = args.arguments?.getInt("arg1")
-            val a2 = args.arguments?.getInt("arg2")
-            Output(arg1 = a1!!, arg2 = a2!!)
-        }
+        composable("Output") { Output("J. R.") }
     }
 }
 
 @Composable
 fun Inputs(navController: NavController) {
-
-    var arg1 by remember {
-        mutableStateOf(0)
-    }
-
-    var arg2 by remember {
-        mutableStateOf(0)
-    }
-
-    Column(
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(15.dp)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TextField(
-                value = arg1.toString(),
-                onValueChange = {
-                    arg1 = it.toInt()
-                },
-                modifier = Modifier.weight(1.0F)
-            )
-            Text(text = "x")
-            TextField(
-                value = arg2.toString(),
-                onValueChange = {
-                    arg2 = it.toInt()
-                },
-                modifier = Modifier.weight(1.0F)
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = {
-            navController.navigate("Output/${arg1}/${arg2}")
-        }, modifier = Modifier.fillMaxWidth()) {
-            Text(text = "Ans")
-        }
+    Box(Modifier.fillMaxSize()) {
+        Button(
+            onClick = { navController.navigate("Output") },
+            modifier = Modifier.fillMaxWidth().align(Alignment.Center).padding(10.dp)
+        ) { Text(text = "Go to next page") }
     }
 }
 
 @Composable
-fun Output(arg1: Int, arg2: Int) {
-    val ans = arg1 * arg2
+fun Output(name: String) {
     Box(Modifier.fillMaxSize()) {
         Text(
             modifier = Modifier.align(Alignment.Center),
-            text = "$arg1 x $arg2 = $ans"
+            text = "Hello $name"
         )
     }
 }
